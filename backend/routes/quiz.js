@@ -6,39 +6,48 @@ const Auth = require("../middleware/auth");
 
 router.post("/", Auth, async (req, res) => {
   try {
+    console.log("Create quiz request received from user:", req.user.email, "Role:", req.user.role);
     if (req.user.role !== "ADMIN") {
+      console.log("User is not ADMIN, rejecting request");
       return res
         .status(401)
         .json({ message: "cannot create quiz. Must be an ADMIN" });
     }
     const { title, questions } = req.body;
+    console.log("Quiz data:", { title, questionCount: questions?.length });
     if (!title || !questions) {
       return res
         .status(401)
         .json({ message: "title and questions are required" });
     }
 
+    console.log("Validating questions...");
     for (const q of questions) {
       if (!Array.isArray(q.options) || q.options.length < 2) {
+        console.log("Validation failed: insufficient options");
         return res
           .status(400)
           .json({ message: "Each question must have at least 2 options" });
       }
       const correctCount = q.options.filter((opt) => opt.isCorrect).length;
       if (correctCount !== 1) {
+        console.log("Validation failed: incorrect answer count");
         return res.status(400).json({
           message: "Each question must have exactly one correct answer",
         });
       }
     }
 
+    console.log("Creating quiz in database...");
     const quiz = await prisma.quiz.create({
       data: {
         title: title,
         createdById: req.user.id,
       },
     });
+    console.log("Quiz created with ID:", quiz.id);
 
+    console.log("Creating questions...");
     for (const q of questions) {
       const question = await prisma.question.create({
         data: {
@@ -46,6 +55,7 @@ router.post("/", Auth, async (req, res) => {
           quizId: quiz.id,
         },
       });
+      console.log("Question created:", question.id);
 
       await prisma.option.createMany({
         data: q.options.map((opt) => ({
@@ -54,11 +64,15 @@ router.post("/", Auth, async (req, res) => {
           questionId: question.id,
         })),
       });
+      console.log("Options created for question:", question.id);
     }
 
+    console.log("Quiz creation successful!");
     res.json({ quizId: quiz.id, message: "Quiz created successfully" });
   } catch (err) {
-    console.log(err);
+    console.log("ERROR creating quiz:", err);
+    console.log("Error message:", err.message);
+    console.log("Error stack:", err.stack);
     res.status(500).json({ message: "could not create quiz, server error" });
   }
 });

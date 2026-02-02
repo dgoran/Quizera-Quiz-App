@@ -57,7 +57,7 @@ const QuizEditor = ({ mode }) => {
         text: "",
         points: 1,
         options: [
-          { text: "", isCorrect: false },
+          { text: "", isCorrect: true },  // First option is correct by default
           { text: "", isCorrect: false },
         ],
       },
@@ -113,6 +113,38 @@ const QuizEditor = ({ mode }) => {
     if (!title.trim() || questions.length === 0) {
       setMessage("Please add a title and at least one question.");
       return;
+    }
+
+    // Validate each question
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+
+      if (!q.text.trim()) {
+        setMessage(`Question ${i + 1} is missing text.`);
+        return;
+      }
+
+      if (!q.options || q.options.length < 2) {
+        setMessage(`Question ${i + 1} must have at least 2 options.`);
+        return;
+      }
+
+      const correctCount = q.options.filter(opt => opt.isCorrect).length;
+      if (correctCount === 0) {
+        setMessage(`Question ${i + 1}: Please mark one option as the correct answer.`);
+        return;
+      }
+      if (correctCount > 1) {
+        setMessage(`Question ${i + 1}: Only one option can be marked as correct.`);
+        return;
+      }
+
+      // Check if all options have text
+      const emptyOptions = q.options.filter(opt => !opt.text.trim());
+      if (emptyOptions.length > 0) {
+        setMessage(`Question ${i + 1}: All options must have text.`);
+        return;
+      }
     }
 
     const payload = {

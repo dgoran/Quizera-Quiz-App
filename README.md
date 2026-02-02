@@ -153,20 +153,55 @@ quizera/
 
 ## 🚀 Quick Start
 
-### **Prerequisites**
+### 🐳 **Option 1: Docker (Recommended)**
+
+The easiest way to run the entire application with one command!
+
+**Prerequisites:** Only Docker Desktop required
+- Download: https://www.docker.com/products/docker-desktop/
+- Or via Homebrew: `brew install --cask docker`
+
+**Start Everything:**
+```bash
+# Clone repository
+git clone https://github.com/yourusername/quizera.git
+cd quizera
+
+# Start all services (PostgreSQL + Backend + Frontend)
+docker-compose up
+```
+
+**Access the app:**
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:3000
+
+**Stop Everything:**
+```bash
+docker-compose down
+```
+
+📖 **Full Docker guide:** See [DOCKER_SETUP.md](DOCKER_SETUP.md)
+
+---
+
+### 💻 **Option 2: Manual Setup (Local Installation)**
+
+If you prefer to run services locally without Docker:
+
+**Prerequisites:**
 - Node.js 18+ installed
 - PostgreSQL 15+ running
 - Git for version control
 
-### **1. Clone Repository**
+**1. Clone Repository**
 ```bash
 git clone https://github.com/yourusername/quizera.git
 cd quizera
 ```
 
-### **2. Backend Setup**
+**2. Backend Setup**
 ```bash
-cd server
+cd backend
 npm install
 
 # Setup environment variables
@@ -178,22 +213,22 @@ npx prisma migrate dev
 npx prisma generate
 
 # Start development server
-npm run dev
+npm start
 ```
 
-### **3. Frontend Setup**
+**3. Frontend Setup**
 ```bash
 # In new terminal
 cd ../quiz-app
 npm install
 
 # Start React development server
-npm start
+npm run dev
 ```
 
-### **4. Environment Configuration**
+**4. Environment Configuration**
 
-**server/.env:**
+**backend/.env:**
 ```env
 DATABASE_URL="postgresql://username:password@localhost:5432/quizera"
 JWT_SECRET="your-super-secret-jwt-key-here"
@@ -203,9 +238,11 @@ NODE_ENV="development"
 
 **quiz-app/.env:**
 ```env
-REACT_APP_API_URL=http://localhost:3000
-REACT_APP_WS_URL=ws://localhost:3000
+VITE_API_URL=http://localhost:3000
+VITE_WS_URL=ws://localhost:3000
 ```
+
+📖 **Full manual setup guide:** See [LOCAL_SETUP.md](LOCAL_SETUP.md)
 
 ---
 

@@ -22,22 +22,33 @@ const Landing = () => {
           </h1>
           
           <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-            Create engaging quizzes and host interactive sessions with real-time participation. 
+            Create engaging quizzes and host interactive sessions with real-time participation.
             Join the future of learning and competition.
           </p>
-          
-          <div className="flex gap-6 justify-center mb-12">
+
+          <div className="flex flex-col gap-4 items-center mb-12">
+            <div className="flex gap-6">
+              <button
+                onClick={() => navigate("/signup")}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 font-semibold text-lg"
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={() => navigate("/signin")}
+                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-xl hover:bg-blue-50 transition-all duration-200 font-semibold text-lg"
+              >
+                Sign In
+              </button>
+            </div>
+
+            <div className="text-gray-500 font-medium">or</div>
+
             <button
-              onClick={() => navigate("/signup")}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 font-semibold text-lg"
+              onClick={() => navigate("/anonymous-join")}
+              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 font-semibold text-lg"
             >
-              Sign Up
-            </button>
-            <button
-              onClick={() => navigate("/signin")}
-              className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-xl hover:bg-blue-50 transition-all duration-200 font-semibold text-lg"
-            >
-              Sign In
+              Join Quiz Anonymously
             </button>
           </div>
           

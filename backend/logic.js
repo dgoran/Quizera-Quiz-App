@@ -10,10 +10,23 @@ const profileRouter = require("./routes/profile");
 const authRouter = require("./routes/authRoutes");
 
 const app = express();
-app.use(helmet());
 
-app.use(cors());
+// Configure CORS to allow frontend origin
+app.use(cors({
+  origin: true, // Allow all origins in development
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
+
+// Configure helmet with less restrictive settings for development
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: false
+}));
 
 app.use("/", authRouter);
 app.use("/profile", profileRouter);

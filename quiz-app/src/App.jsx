@@ -7,6 +7,7 @@ import UserRoom from "./pages/UserRoom";
 import QuizEditor from "./pages/QuizEditor";
 import ErrorPage from "./pages/ErrorPage";
 import JoinQuiz from "./pages/JoinQuiz";
+import AnonymousJoin from "./pages/AnonymousJoin";
 import AdminRoom from "./pages/adminRoom";
 import Landing from './pages/LandingPage';
 import { SocketProvider } from "./Contexts/SocketContext";
@@ -24,9 +25,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />        
+        <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/anonymous-join" element={<AnonymousJoin />} />
   
         {/* Common routes */}
         <Route
@@ -76,11 +78,7 @@ function App() {
         <Route element={<SocketRoutesWrapper />}>
           <Route
             path="/room/:roomCode"
-            element={
-              <ProtectedRoute>
-                <UserRoom />
-              </ProtectedRoute>
-            }
+            element={<UserRoom />}
           />
           <Route
             path="/adminroom/:quizId"

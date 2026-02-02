@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const jwt_secret = "123random";
+const jwt_secret = process.env.JWT_SECRET || "123random";
 const router = express.Router();
 
 

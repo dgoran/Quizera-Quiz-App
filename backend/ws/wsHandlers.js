@@ -194,6 +194,38 @@ function handleSubmitAnswer(socket, data, rooms) {
       isCorrect ? "correct" : "wrong"
     })`
   );
+
+  // Send real-time response statistics to admin
+  const responseCounts = {};
+  room.currentQuestion.options.forEach(opt => {
+    responseCounts[opt.id] = 0;
+  });
+
+  Object.values(room.submissions).forEach(sub => {
+    const answer = sub.answers.find(a => a.questionId === questionId);
+    if (answer && responseCounts[answer.selectedOption] !== undefined) {
+      responseCounts[answer.selectedOption]++;
+    }
+  });
+
+  const totalResponses = Object.values(responseCounts).reduce((sum, count) => sum + count, 0);
+  const responseStats = room.currentQuestion.options.map(opt => ({
+    optionId: opt.id,
+    optionText: opt.text,
+    count: responseCounts[opt.id],
+    percentage: totalResponses > 0 ? Math.round((responseCounts[opt.id] / totalResponses) * 100) : 0
+  }));
+
+  if (room.admin && room.admin.readyState === 1) {
+    room.admin.send(
+      JSON.stringify({
+        type: "responseUpdate",
+        questionId: questionId,
+        responses: responseStats,
+        totalResponses: totalResponses
+      })
+    );
+  }
 }
 
 
