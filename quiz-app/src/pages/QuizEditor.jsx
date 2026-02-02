@@ -152,7 +152,7 @@ const QuizEditor = ({ mode }) => {
           headers: { authorization: token },
         });
         navigate("/admin");
-      } catch (err) {
+      } catch {
         setMessage("Failed to delete quiz.");
       }
     }

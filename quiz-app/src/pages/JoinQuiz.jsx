@@ -9,7 +9,6 @@ const JoinQuiz = () => {
   const navigate = useNavigate();
 
   const name = localStorage.getItem("name");
-  const userId = localStorage.getItem("userId");
 
   const handleJoin = () => {
     setMessage("");
